@@ -1,0 +1,138 @@
+{
+	"Name": "Admin Tools",
+	"Description": "Helpful and fun commands for server admins",
+	"Version": "1.0.0",
+	"LoadPriority": 2,
+	"ConVars": [
+		{
+			"Name": "admins",
+			"DefaultValue": "Tingleheimers"
+		}
+	],
+	"Scripts": [
+		{
+			"Path": "_start.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "LoadAdminList"
+			}
+		},
+		{
+			"Path": "_utils.nut",
+			"RunOn": "SERVER && MP"
+		},
+		{
+			"Path": "fly.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "FlyCommand"
+			}
+		},
+		{
+			"Path": "freeze.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "FreezeCommand"
+			}
+		},
+		{
+			"Path": "heal.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "HealCommand"
+			}
+		},
+		{
+			"Path": "respawn.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "RespawnCommand"
+			}
+		},
+		{
+			"Path": "slay.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "SlayCommand"
+			}
+		},
+		{
+			"Path": "spawn_titan.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "SpawnTitanCommand"
+			}
+		},
+		{
+			"Path": "teams/team_shuffle.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "ShuffleTeamsCommand"
+			}
+		},
+		{
+			"Path": "teams/team_switch.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "SwitchTeamsCommand"
+			}
+		},
+		{
+			"Path": "teleport.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "TeleportCommand"
+			}
+		},
+		{
+			"Path": "tell.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "TellCommand"
+			}
+		},
+		{
+			"Path": "titanfall.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "TitanfallCommand"
+			}
+		},
+		{
+			"Path": "vanish.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "VanishCommand"
+			}
+		},
+		{
+			"Path": "weapons/weapon_give.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "GiveWeaponCommand"
+			}
+		},
+		{
+			"Path": "weapons/weapon_reload.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "ReloadWeaponCommand"
+			}
+		},
+		{
+			"Path": "weapons/weapon_remove.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "RemoveWeaponCommand"
+			}
+		},
+		{
+			"Path": "weapons/weapons_pilot.nut",
+			"RunOn": "SERVER && MP"
+		},
+		{
+			"Path": "weapons/weapons_titan.nut",
+			"RunOn": "SERVER && MP"
+		}
+	]
+}
