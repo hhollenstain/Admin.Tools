@@ -6,8 +6,20 @@ global function GetTeamPlayers
 entity function FindPlayerByName(string playerName)
 {
 	foreach (entity player in GetPlayerArray())
-		if (player != null && player.GetPlayerName().tolower() == playerName.tolower())
+	{
+		if (player == null)
+			continue
+
+		string thisPlayerName = player.GetPlayerName().tolower()
+		string thatPlayerName = playerName.tolower()
+
+		if (thisPlayerName == thatPlayerName)
 			return player
+
+		// Partial match
+		if (thisPlayerName.find(thatPlayerName) > -1)
+			return player
+	}
 
 	print("Player " + playerName + " could not be found.")
 
@@ -22,7 +34,7 @@ array<entity> function FindPlayersByName(array<string> playerNames)
 	{
 		entity player = FindPlayerByName(playerName)
 
-		if (player != null)
+		if (player != null && players.find(player) < 0)
 			players.append(player)
 	}
 
