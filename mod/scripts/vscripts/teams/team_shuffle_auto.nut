@@ -1,7 +1,7 @@
 global function AutoShuffleTeamsHook
 
 array<string> disabledMaps = ["mp_lobby"]
-array<string> disabledModes = ["private_match", "inf", "hs", "ffa"]
+array<string> disabledModes = ["private_match", "inf", "hs", "ffa", "gg"]
 
 void function AutoShuffleTeamsHook()
 {

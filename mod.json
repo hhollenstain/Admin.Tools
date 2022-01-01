@@ -6,7 +6,7 @@
 	"ConVars": [
 		{
 			"Name": "admins",
-			"DefaultValue": "Tingleheimers"
+			"DefaultValue": "Tingleheimers,LinuxTheAdmin"
 		},
 		{
 			"Name": "auto_shuffle_teams",
