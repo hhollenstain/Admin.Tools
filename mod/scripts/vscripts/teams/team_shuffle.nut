@@ -1,4 +1,5 @@
 global function ShuffleTeamsCommand
+global function ShuffleTeams
 
 void function ShuffleTeamsCommand()
 {
@@ -15,6 +16,13 @@ bool function Command(entity player, array<string> args)
 		return true
 	}
 
+    ShuffleTeams()
+
+	return true
+}
+
+void function ShuffleTeams()
+{
     array<entity> players = GetShuffledPlayers()
 
     int team = TEAM_IMC
@@ -28,8 +36,6 @@ bool function Command(entity player, array<string> args)
         else
             team = TEAM_IMC
     }
-
-	return true
 }
 
 array<entity> function GetShuffledPlayers()

@@ -7,6 +7,10 @@
 		{
 			"Name": "admins",
 			"DefaultValue": "Tingleheimers"
+		},
+		{
+			"Name": "auto_shuffle_teams",
+			"DefaultValue": "1"
 		}
 	],
 	"Scripts": [
@@ -75,6 +79,13 @@
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
 				"After": "SpawnTitanCommand"
+			}
+		},
+		{
+			"Path": "teams/team_shuffle_auto.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "AutoShuffleTeamsHook"
 			}
 		},
 		{
