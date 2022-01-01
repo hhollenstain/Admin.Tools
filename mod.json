@@ -36,10 +36,24 @@
 			}
 		},
 		{
+			"Path": "godmode.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "GodModeCommand"
+			}
+		},
+		{
 			"Path": "heal.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
 				"After": "HealCommand"
+			}
+		},
+		{
+			"Path": "health.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "HealthCommand"
 			}
 		},
 		{
