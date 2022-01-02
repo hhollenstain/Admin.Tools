@@ -61,6 +61,20 @@
 			}
 		},
 		{
+			"Path": "kick.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "KickCommand"
+			}
+		},
+		{
+			"Path": "rcon.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "RCONCommand"
+			}
+		},
+		{
 			"Path": "respawn.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
