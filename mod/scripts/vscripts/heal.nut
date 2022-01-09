@@ -9,36 +9,10 @@ void function HealCommand()
 
 bool function Command(entity player, array<string> args)
 {
-	if (!PlayerIsAdmin(player))
-	{
-		print("Player " + player.GetPlayerName() + " tried to use heal, but they are not an admin.")
-		return true
-	}
-
-	if (args.len() == 0)
+    if (PlayerIsAdmin(player))
     {
-        thread Heal([player])
-        return true
+        thread Heal(GetSelectedPlayers(player, args))
     }
-
-    switch (args[0].tolower())
-	{
-		case ("all"):
-			thread Heal(GetPlayerArray())
-		break
-
-		case ("us"):
-			thread Heal(GetTeamPlayers(player))
-		break
-
-		case ("them"):
-			thread Heal(GetEnemyPlayers(player))
-		break
-
-		default:
-			thread Heal(FindPlayersByName(args))
-		break
-	}
 
     return true
 }

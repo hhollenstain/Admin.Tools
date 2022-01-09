@@ -11,44 +11,22 @@ bool function Command(entity player, array <string> args)
 {
 	if (!PlayerIsAdmin(player))
 	{
-		print("Player " + player.GetPlayerName() + " tried to use tell, but they are not an admin.")
 		return true
 	}
 
 	if (args.len() < 2)
 	{
 		print("Usage: tell <player> <message>")
-        return true
+		return true
 	}
 
-    string target = args[0].tolower()
+	array<entity> players = GetSelectedPlayers(player, [args[0]])
 
-    string message = ""
+	string message = ""
 	foreach (string word in args.slice(1))
 		message += word + " "
 
-    array<entity> players = []
-
-    switch (target)
-	{
-		case ("all"):
-			players = GetPlayerArray()
-		break
-
-		case ("us"):
-			players = GetTeamPlayers(player)
-		break
-
-		case ("them"):
-			players = GetEnemyPlayers(player)
-		break
-
-		default:
-			players = [FindPlayerByName(target)]
-		break
-	}
-
-    thread Tell(players, message)
+	thread Tell(players, message)
 
     return true
 }

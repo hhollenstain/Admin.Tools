@@ -12,7 +12,6 @@ bool function Command(entity player, array<string> args)
 {
 	if (!PlayerIsAdmin(player))
 	{
-		print("Player " + player.GetPlayerName() + " tried to use teleport, but they are not an admin.")
 		return true
 	}
 
@@ -37,7 +36,7 @@ bool function Command(entity player, array<string> args)
 		player2 = FindPlayerByName(args[1])
 	}
 
-	Teleport(player1, player2)
+	thread Teleport(player1, player2)
 
 	return true
 }

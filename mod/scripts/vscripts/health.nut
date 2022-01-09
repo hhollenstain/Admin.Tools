@@ -12,35 +12,16 @@ bool function Command(entity player, array<string> args)
 {
 	if (!PlayerIsAdmin(player))
 	{
-		print("Player " + player.GetPlayerName() + " tried to use health, but they are not an admin.")
-		return true
 	}
-
-	if (args.len() < 2)
+	else if (args.len() < 1)
 	{
+		print("Usage: health <value>")
 		print("Usage: health <value> <playerName>")
-		return true
 	}
-
-	int value = args[0].tointeger()
-
-	switch (args[1].tolower())
+	else
 	{
-		case ("all"):
-			Health(GetPlayerArray(), value)
-		break
-
-		case ("us"):
-			Health(GetTeamPlayers(player), value)
-		break
-
-		case ("them"):
-			Health(GetEnemyPlayers(player), value)
-		break
-
-		default:
-			Health(FindPlayersByName(args.slice(1)), value)
-		break
+		array<entity> players = GetSelectedPlayers(player, args.slice(1))
+		thread Health(players, args[0].tointeger())
 	}
 
 	return true

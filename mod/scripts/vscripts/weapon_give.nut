@@ -11,45 +11,63 @@ bool function Command(entity player, array<string> args)
 {
 	if (!PlayerIsAdmin(player))
 	{
-		print("Player " + player.GetPlayerName() + " tried to use weapon, but they are not an admin.")
-		return true
 	}
-
-	if (args.len() == 0)
+	else if (args.len() == 0)
 	{
-		print("Current ordnance: " + player.GetOffhandWeapon(OFFHAND_ORDNANCE).GetWeaponClassName())
+		print("Usage: weapon <weaponId>")
 		print("Usage: weapon <weaponId> <all/us/them/player>")
-		return true
 	}
-
-	string weaponId = args[0].tolower()
-
-	if (args.len() == 1)
+	else
 	{
-		GiveWeaponToPlayers([player], weaponId)
-		return true
-	}
-
-	switch (args[1])
-	{
-		case ("all"):
-			GiveWeaponToPlayers(GetPlayerArray(), weaponId)
-		break
-
-		case ("us"):
-			GiveWeaponToPlayers(GetTeamPlayers(player), weaponId)
-		break
-
-		case ("them"):
-			GiveWeaponToPlayers(GetEnemyPlayers(player), weaponId)
-		break
-
-		default:
-			GiveWeaponToPlayers(FindPlayersByName(args.slice(1)), weaponId)
-		break
+		array<entity> players = GetSelectedPlayers(player, args.slice(1))
+		thread GiveWeaponToPlayers(players, args[0].tolower())
 	}
 
 	return true
+}
+
+void function GiveWeaponToPlayers(array<entity> players, string weaponId)
+{
+	bool isPilotTactical = pilot_tacticals.find(weaponId) > -1
+	bool isPilotOrdnance = pilot_ordnances.find(weaponId) > -1
+	bool isPilotMelee = pilot_melees.find(weaponId) > -1
+	bool isTitanOffensive = titan_offensives.find(weaponId) > -1
+	bool isTitanDefensive = titan_defensives.find(weaponId) > -1
+	bool isTitanUtility = titan_utilities.find(weaponId) > -1
+	bool isTitanCore = titan_cores.find(weaponId) > -1
+	bool isTitanMelee = titan_melees.find(weaponId) > -1
+
+	foreach (entity player in players)
+	{
+		if (player == null)
+		{
+			continue
+		}
+		else if (isPilotTactical || isTitanDefensive)
+		{
+			GiveSpecial(player, weaponId)
+		}
+		else if (isPilotOrdnance || isTitanOffensive)
+		{
+			GiveOrdnance(player, weaponId)
+		}
+		else if (isPilotMelee || isTitanMelee)
+		{
+			GiveMelee(player, weaponId)
+		}
+		else if (isTitanCore)
+		{
+			GiveTitanCore(player, weaponId)
+		}
+		else if (isTitanUtility)
+		{
+			GiveTitanUtility(player, weaponId)
+		}
+		else
+		{
+			GiveWeapon(player, weaponId)
+		}
+	}
 }
 
 void function GiveMelee(entity player, string weaponId)
@@ -166,49 +184,5 @@ void function GiveWeapon(entity player, string weaponId)
 	catch (e)
 	{
 		print("Weapon " + weaponId + " is not a valid weapon.")
-	}
-}
-
-void function GiveWeaponToPlayers(array<entity> players, string weaponId)
-{
-	bool isPilotTactical = pilot_tacticals.find(weaponId) > -1
-	bool isPilotOrdnance = pilot_ordnances.find(weaponId) > -1
-	bool isPilotMelee = pilot_melees.find(weaponId) > -1
-	bool isTitanOffensive = titan_offensives.find(weaponId) > -1
-	bool isTitanDefensive = titan_defensives.find(weaponId) > -1
-	bool isTitanUtility = titan_utilities.find(weaponId) > -1
-	bool isTitanCore = titan_cores.find(weaponId) > -1
-	bool isTitanMelee = titan_melees.find(weaponId) > -1
-
-	foreach (entity player in players)
-	{
-		if (player == null)
-		{
-			continue
-		}
-		else if (isPilotTactical || isTitanDefensive)
-		{
-			GiveSpecial(player, weaponId)
-		}
-		else if (isPilotOrdnance || isTitanOffensive)
-		{
-			GiveOrdnance(player, weaponId)
-		}
-		else if (isPilotMelee || isTitanMelee)
-		{
-			GiveMelee(player, weaponId)
-		}
-		else if (isTitanCore)
-		{
-			GiveTitanCore(player, weaponId)
-		}
-		else if (isTitanUtility)
-		{
-			GiveTitanUtility(player, weaponId)
-		}
-		else
-		{
-			GiveWeapon(player, weaponId)
-		}
 	}
 }

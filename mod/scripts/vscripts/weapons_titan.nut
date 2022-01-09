@@ -62,3 +62,28 @@ global const titan_melees = [
 	"melee_titan_punch_vanguard",
 	"melee_titan_punch_fighter"
 ]
+
+global const titan_npc_list = [
+	"npc_titan_atlas_stickybomb_boss_fd",
+	"npc_titan_atlas_stickybomb",
+	"npc_titan_atlas_tracker_boss_fd",
+	"npc_titan_atlas_tracker_fd_sniper",
+	"npc_titan_atlas_tracker_mortar",
+	"npc_titan_atlas_tracker",
+	"npc_titan_atlas_vanguard_boss_fd",
+	"npc_titan_atlas_vanguard",
+	"npc_titan_ogre_meteor_boss_fd",
+	"npc_titan_ogre_meteor",
+	"npc_titan_ogre_minigun_boss_fd",
+	"npc_titan_ogre_minigun_nuke",
+	"npc_titan_ogre_minigun",
+	"npc_titan_stryder_leadwall_arc",
+	"npc_titan_stryder_leadwall_boss_fd",
+	"npc_titan_stryder_leadwall_shift_core",
+	"npc_titan_stryder_leadwall",
+	"npc_titan_stryder_rocketeer_dash_core",
+	"npc_titan_stryder_rocketeer",
+	"npc_titan_stryder_sniper_boss_fd",
+	"npc_titan_stryder_sniper_fd",
+	"npc_titan_stryder_sniper"
+]

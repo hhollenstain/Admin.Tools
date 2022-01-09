@@ -10,77 +10,27 @@ void function VanishCommand()
 
 bool function Command1(entity player, array<string> args)
 {
-	if (!PlayerIsAdmin(player))
-	{
-		print("Player " + player.GetPlayerName() + " tried to use vanish, but they are not an admin.")
-		return true
-	}
-
-	if (args.len() == 0)
-	{
-		Vanish([player])
-		return true
-	}
-
-    switch (args[0].tolower())
-	{
-		case ("all"):
-			Vanish(GetPlayerArray())
-		break
-
-		case ("us"):
-			Vanish(GetTeamPlayers(player))
-		break
-
-		case ("them"):
-			Vanish(GetEnemyPlayers(player))
-		break
-
-		default:
-			Vanish(FindPlayersByName(args))
-		break
-	}
+    if (PlayerIsAdmin(player))
+    {
+        array<entity> players = GetSelectedPlayers(player, args)
+        thread SetVisibility(players, 0)
+    }
 
     return true
 }
 
 bool function Command2(entity player, array<string> args)
 {
-	if (!PlayerIsAdmin(player))
-	{
-		print("Player " + player.GetPlayerName() + " tried to use reveal, but they are not an admin.")
-		return true
-	}
-
-	if (args.len() == 0)
-	{
-		Reveal([player])
-		return true
-	}
-
-    switch (args[0].tolower())
-	{
-		case ("all"):
-			Reveal(GetPlayerArray())
-		break
-
-		case ("us"):
-			Reveal(GetTeamPlayers(player))
-		break
-
-		case ("them"):
-			Reveal(GetEnemyPlayers(player))
-		break
-
-		default:
-			Reveal(FindPlayersByName(args))
-		break
-	}
+	if (PlayerIsAdmin(player))
+    {
+        array<entity> players = GetSelectedPlayers(player, args)
+        thread SetVisibility(players, ENTITY_VISIBLE_TO_EVERYONE)
+    }
 
     return true
 }
 
-void function Vanish(array<entity> players)
+void function SetVisibility(array<entity> players, int visibilityLevel)
 {
     foreach (entity player in players)
 	{
@@ -89,29 +39,11 @@ void function Vanish(array<entity> players)
 
         try
         {
-			player.kv.VisibilityFlags = 0
+			player.kv.VisibilityFlags = visibilityLevel
         }
         catch (e)
         {
-            print("Failed to vanish player " + player.GetPlayerName() + ".")
-        }
-    }
-}
-
-void function Reveal(array<entity> players)
-{
-    foreach (entity player in players)
-	{
-        if (player == null)
-            continue
-
-        try
-        {
-			player.kv.VisibilityFlags = ENTITY_VISIBLE_TO_EVERYONE
-        }
-        catch (e)
-        {
-            print("Failed to reveal player " + player.GetPlayerName() + ".")
+            print("Failed to set visibility for player " + player.GetPlayerName() + ".")
         }
     }
 }

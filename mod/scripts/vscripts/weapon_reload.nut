@@ -9,35 +9,9 @@ void function ReloadWeaponCommand()
 
 bool function Command(entity player, array<string> args)
 {
-	if (!PlayerIsAdmin(player))
+	if (PlayerIsAdmin(player))
 	{
-		print("Player " + player.GetPlayerName() + " tried to use rearm, but they are not an admin.")
-		return true
-	}
-
-	if (args.len() == 0)
-	{
-		ReloadWeapon([player])
-		return true
-	}
-
-	switch (args[0].tolower())
-	{
-		case ("all"):
-			ReloadWeapon(GetPlayerArray())
-		break
-
-		case ("us"):
-			ReloadWeapon(GetTeamPlayers(player))
-		break
-
-		case ("them"):
-			ReloadWeapon(GetEnemyPlayers(player))
-		break
-
-		default:
-			ReloadWeapon(FindPlayersByName(args))
-		break
+		thread ReloadWeapon(GetSelectedPlayers(player, args))
 	}
 
 	return true

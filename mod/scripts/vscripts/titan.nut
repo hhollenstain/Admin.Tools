@@ -1,49 +1,29 @@
-global function SpawnTitanCommand
+global function TitanCommand
 
-global const titan_list = [
-	"npc_titan_atlas_stickybomb_boss_fd",
-	"npc_titan_atlas_stickybomb",
-	"npc_titan_atlas_tracker_boss_fd",
-	"npc_titan_atlas_tracker_fd_sniper",
-	"npc_titan_atlas_tracker_mortar",
-	"npc_titan_atlas_tracker",
-	"npc_titan_atlas_vanguard_boss_fd",
-	"npc_titan_atlas_vanguard",
-	"npc_titan_ogre_meteor_boss_fd",
-	"npc_titan_ogre_meteor",
-	"npc_titan_ogre_minigun_boss_fd",
-	"npc_titan_ogre_minigun_nuke",
-	"npc_titan_ogre_minigun",
-	"npc_titan_stryder_leadwall_arc",
-	"npc_titan_stryder_leadwall_boss_fd",
-	"npc_titan_stryder_leadwall_shift_core",
-	"npc_titan_stryder_leadwall",
-	"npc_titan_stryder_rocketeer_dash_core",
-	"npc_titan_stryder_rocketeer",
-	"npc_titan_stryder_sniper_boss_fd",
-	"npc_titan_stryder_sniper_fd",
-	"npc_titan_stryder_sniper"
-]
-
-void function SpawnTitanCommand()
+void function TitanCommand()
 {
 	#if SERVER
-	AddClientCommandCallback("spawntitan", Command)
+	AddClientCommandCallback("titan", Command)
 	#endif
 }
 
 bool function Command(entity player, array<string> args)
 {
-	string titanId = titan_list[RandomInt(titan_list.len())]
+	if (!PlayerIsAdmin(player))
+	{
+		return true
+	}
+
+	string titanId = titan_npc_list[RandomInt(titan_npc_list.len())]
 
 	if (args.len() > 0)
 	{
 		string targetId = args[0].tolower()
 
 		if (targetId == "viper")
-			return SpawnViper(player, args)
+			return SpawnViper(player)
 
-		if (titan_list.find(targetId) > -1)
+		if (titan_npc_list.find(targetId) > -1)
 			titanId = targetId
 	}
 
@@ -58,12 +38,12 @@ bool function Command(entity player, array<string> args)
 	SetSpawnOption_NPCTitan(titan, TITAN_HENCH)
 	SetSpawnOption_AISettings(titan, titanId)
 
-	DispatchSpawn(titan)
+	thread DispatchSpawn(titan)
 
 	return true
 }
 
-bool function SpawnViper(entity player, array<string> args)
+bool function SpawnViper(entity player)
 {
 	TitanLoadoutDef ornull loadout = GetTitanLoadoutForBossCharacter("Viper")
 
@@ -98,7 +78,7 @@ bool function SpawnViper(entity player, array<string> args)
 
 	npc.ai.bossTitanPlayIntro = false
 
-	DispatchSpawn(npc)
+	thread DispatchSpawn(npc)
 
 	return true
 }

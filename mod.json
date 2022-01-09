@@ -89,28 +89,21 @@
 			}
 		},
 		{
-			"Path": "spawn_titan.nut",
-			"RunOn": "SERVER && MP",
-			"ServerCallback": {
-				"After": "SpawnTitanCommand"
-			}
-		},
-		{
-			"Path": "teams/team_shuffle_auto.nut",
+			"Path": "team_shuffle_auto.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
 				"After": "AutoShuffleTeamsHook"
 			}
 		},
 		{
-			"Path": "teams/team_shuffle.nut",
+			"Path": "team_shuffle.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
 				"After": "ShuffleTeamsCommand"
 			}
 		},
 		{
-			"Path": "teams/team_switch.nut",
+			"Path": "team_switch.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
 				"After": "SwitchTeamsCommand"
@@ -131,6 +124,13 @@
 			}
 		},
 		{
+			"Path": "titan.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "TitanCommand"
+			}
+		},
+		{
 			"Path": "titanfall.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
@@ -145,32 +145,32 @@
 			}
 		},
 		{
-			"Path": "weapons/weapon_give.nut",
+			"Path": "weapon_give.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
 				"After": "GiveWeaponCommand"
 			}
 		},
 		{
-			"Path": "weapons/weapon_reload.nut",
+			"Path": "weapon_reload.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
 				"After": "ReloadWeaponCommand"
 			}
 		},
 		{
-			"Path": "weapons/weapon_remove.nut",
+			"Path": "weapon_remove.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
 				"After": "RemoveWeaponCommand"
 			}
 		},
 		{
-			"Path": "weapons/weapons_pilot.nut",
+			"Path": "weapons_pilot.nut",
 			"RunOn": "SERVER && MP"
 		},
 		{
-			"Path": "weapons/weapons_titan.nut",
+			"Path": "weapons_titan.nut",
 			"RunOn": "SERVER && MP"
 		}
 	]

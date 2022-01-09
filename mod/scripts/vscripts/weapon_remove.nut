@@ -9,35 +9,9 @@ void function RemoveWeaponCommand()
 
 bool function Command(entity player, array<string> args)
 {
-	if (!PlayerIsAdmin(player))
+	if (PlayerIsAdmin(player))
 	{
-		print("Player " + player.GetPlayerName() + " tried to use unarm, but they are not an admin.")
-		return true
-	}
-
-	if (args.len() == 0)
-	{
-		RemoveWeapon([player])
-		return true
-	}
-
-	switch (args[0].tolower())
-	{
-		case ("all"):
-			RemoveWeapon(GetPlayerArray())
-		break
-
-		case ("us"):
-			RemoveWeapon(GetTeamPlayers(player))
-		break
-
-		case ("them"):
-			RemoveWeapon(GetEnemyPlayers(player))
-		break
-
-		default:
-			RemoveWeapon(FindPlayersByName(args))
-		break
+		thread RemoveWeapon(GetSelectedPlayers(player, args))
 	}
 
 	return true

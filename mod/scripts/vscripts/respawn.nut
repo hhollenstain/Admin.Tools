@@ -11,35 +11,9 @@ void function RespawnCommand()
 
 bool function Command(entity player, array<string> args)
 {
-	if (!PlayerIsAdmin(player))
+	if (PlayerIsAdmin(player))
 	{
-		print("Player " + player.GetPlayerName() + " tried to use respawn, but they are not an admin.")
-		return true
-	}
-
-	if (args.len() == 0)
-	{
-		Respawn([player])
-		return true
-	}
-
-	switch (args[0].tolower())
-	{
-		case ("all"):
-			Respawn(GetPlayerArray())
-		break
-
-		case ("us"):
-			Respawn(GetTeamPlayers(player))
-		break
-
-		case ("them"):
-			Respawn(GetEnemyPlayers(player))
-		break
-
-		default:
-			Respawn(FindPlayersByName(args))
-		break
+		thread Respawn(GetSelectedPlayers(player, args))
 	}
 
 	return true

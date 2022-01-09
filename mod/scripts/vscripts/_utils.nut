@@ -1,7 +1,8 @@
 global function FindPlayerByName
 global function FindPlayersByName
-global function GetEnemyPlayers
 global function GetTeamPlayers
+global function GetEnemyPlayers
+global function GetSelectedPlayers
 
 entity function FindPlayerByName(string playerName)
 {
@@ -41,13 +42,42 @@ array<entity> function FindPlayersByName(array<string> playerNames)
 	return players
 }
 
-array<entity> function GetEnemyPlayers(entity player)
-{
-    int team = player.GetTeam() == TEAM_IMC ? TEAM_MILITIA : TEAM_IMC
-	return GetPlayerArrayOfTeam(team)
-}
-
 array<entity> function GetTeamPlayers(entity player)
 {
 	return GetPlayerArrayOfTeam(player.GetTeam())
+}
+
+array<entity> function GetEnemyPlayers(entity player)
+{
+    int team = (player.GetTeam() == TEAM_IMC) ? TEAM_MILITIA : TEAM_IMC
+	return GetPlayerArrayOfTeam(team)
+}
+
+array<entity> function GetSelectedPlayers(entity player, array<string> args)
+{
+	array<entity> players = [player]
+
+	if (args.len() > 0)
+	{
+		switch (args[0].tolower())
+		{
+			case ("all"):
+				players = GetPlayerArray()
+			break
+
+			case ("us"):
+				players = GetTeamPlayers(player)
+			break
+
+			case ("them"):
+				players = GetEnemyPlayers(player)
+			break
+
+			default:
+				players = FindPlayersByName(args)
+			break
+		}
+	}
+
+	return players
 }

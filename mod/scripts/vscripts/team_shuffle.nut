@@ -10,26 +10,21 @@ void function ShuffleTeamsCommand()
 
 bool function Command(entity player, array<string> args)
 {
-	if (!PlayerIsAdmin(player))
-	{
-		print("Player " + player.GetPlayerName() + " tried to use shuffle, but they are not an admin.")
-		return true
-	}
-
-    ShuffleTeams()
+	if (PlayerIsAdmin(player))
+    {
+        thread ShuffleTeams()
+    }
 
 	return true
 }
 
 void function ShuffleTeams()
 {
-    array<entity> players = GetShuffledPlayers()
-
     int team = TEAM_IMC
 
-    foreach (entity p in players)
+    foreach (entity player in GetShuffledPlayers())
     {
-        SetTeam(p, team)
+        SetTeam(player, team)
 
         if (team == TEAM_IMC)
             team = TEAM_MILITIA
@@ -44,10 +39,10 @@ array<entity> function GetShuffledPlayers()
 
 	for (int i = players.len() - 1; i > 0; i--)
     {
-        int index = RandomInt(i + 1)
-        entity temp = players[index]
+        int randomIndex = RandomInt(i + 1)
+        entity temp = players[randomIndex]
 
-        players[index] = players[i]
+        players[randomIndex] = players[i]
         players[i] = temp
     }
 

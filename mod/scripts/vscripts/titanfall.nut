@@ -10,35 +10,9 @@ void function TitanfallCommand()
 
 bool function Command(entity player, array<string> args)
 {
-	if (!PlayerIsAdmin(player))
+	if (PlayerIsAdmin(player))
 	{
-		print("Player " + player.GetPlayerName() + " tried to use titanfall, but they are not an admin.")
-		return true
-	}
-
-	if (args.len() == 0)
-	{
-		Titanfall([player])
-		return true
-	}
-
-	switch (args[0].tolower())
-	{
-		case ("all"):
-			Titanfall(GetPlayerArray())
-		break
-
-		case ("us"):
-			Titanfall(GetTeamPlayers(player))
-		break
-
-		case ("them"):
-			Titanfall(GetEnemyPlayers(player))
-		break
-
-		default:
-			Titanfall(FindPlayersByName(args))
-		break
+		thread Titanfall(GetSelectedPlayers(player, args))
 	}
 
 	return true
