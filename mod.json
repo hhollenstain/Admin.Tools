@@ -61,6 +61,13 @@
 			}
 		},
 		{
+			"Path": "jump.nut",
+			"RunOn": "SERVER && MP",
+			"ServerCallback": {
+				"After": "JumpCommand"
+			}
+		},
+		{
 			"Path": "kick.nut",
 			"RunOn": "SERVER && MP",
 			"ServerCallback": {
