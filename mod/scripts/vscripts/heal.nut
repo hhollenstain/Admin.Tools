@@ -21,8 +21,18 @@ void function Heal(array<entity> players)
 {
     foreach (entity player in players)
 	{
-        if (player == null)
+        if (player == null || !IsAlive(player))
             continue
+
+        if (player.IsTitan())
+        {
+            entity soul = player.GetTitanSoul()
+
+            if (soul.IsDoomed())
+                UndoomTitan(player, 1)
+
+            soul.SetShieldHealth(soul.GetShieldHealthMax())
+        }
 
         player.SetHealth(player.GetMaxHealth())
     }
