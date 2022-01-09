@@ -1,84 +1,84 @@
 global function TitanCommand
 
+// Health of NPC titans (2500 per bar)
+int titanHealth = 25000
+
 void function TitanCommand()
 {
 	#if SERVER
-	AddClientCommandCallback("titan", Command)
+	AddClientCommandCallback("titan", Command1)
+	AddClientCommandCallback("wingman", Command2)
 	#endif
 }
 
-bool function Command(entity player, array<string> args)
+bool function Command1(entity player, array<string> args)
 {
 	if (!PlayerIsAdmin(player))
-	{
 		return true
-	}
 
-	string titanId = titan_npc_list[RandomInt(titan_npc_list.len())]
+	string type = args.len() > 0 ? args[0].tolower() : titan_npc_list[RandomInt(titan_npc_list.len())]
 
-	if (args.len() > 0)
-	{
-		string targetId = args[0].tolower()
-
-		if (targetId == "viper")
-			return SpawnViper(player)
-
-		if (titan_npc_list.find(targetId) > -1)
-			titanId = targetId
-	}
-
-	vector origin = GetPlayerCrosshairOrigin(player)
-	vector angles = player.EyeAngles()
-
-	angles.x = 0
-	angles.z = 0
-
-	entity titan = CreateNPCTitan("npc_titan", player.GetTeam(), origin, angles, [])
-
-	SetSpawnOption_NPCTitan(titan, TITAN_HENCH)
-	SetSpawnOption_AISettings(titan, titanId)
-
-	thread DispatchSpawn(titan)
+	thread SpawnTitan(player, type, GetPlayerCrosshairOrigin(player))
 
 	return true
 }
 
-bool function SpawnViper(entity player)
+bool function Command2(entity player, array<string> args)
 {
-	TitanLoadoutDef ornull loadout = GetTitanLoadoutForBossCharacter("Viper")
-
-	if (loadout == null)
+	if (!PlayerIsAdmin(player))
 		return true
 
-	expect TitanLoadoutDef(loadout)
+	string type = args.len() > 0 ? args[0].tolower() : titan_npc_list[RandomInt(titan_npc_list.len())]
 
-	string baseClass = "npc_titan"
-	string aiSettings = GetNPCSettingsFileForTitanPlayerSetFile(loadout.setFile)
-
-	vector origin = GetPlayerCrosshairOrigin(player)
-	vector angles = Vector(0, 0, 0)
-
-	entity npc = CreateNPC(baseClass, player.GetTeam(), origin, angles)
-
-	if (IsTurret(npc))
-		npc.kv.origin -= Vector(0, 0, 32)
-
-	SetSpawnOption_AISettings(npc, aiSettings)
-
-	if (npc.GetClassName() == "npc_titan")
-	{
-		string builtInLoadout = expect string(Dev_GetAISettingByKeyField_Global(aiSettings, "npc_titan_player_settings"))
-		SetTitanSettings(npc.ai.titanSettings, builtInLoadout)
-		npc.ai.titanSpawnLoadout.setFile = builtInLoadout
-		OverwriteLoadoutWithDefaultsForSetFile(npc.ai.titanSpawnLoadout) // get the entire loadout, including defensive and tactical
-	}
-
-	SetSpawnOption_NPCTitan(npc, TITAN_MERC)
-	SetSpawnOption_TitanLoadout(npc, loadout)
-
-	npc.ai.bossTitanPlayIntro = false
-
-	thread DispatchSpawn(npc)
+	thread SpawnTitan(player, type, player.GetOrigin())
 
 	return true
+}
+
+void function SpawnTitan(entity player, string type, vector location)
+{
+	switch (type)
+	{
+		case ("ion"):
+			type = "npc_titan_atlas_stickybomb_boss_fd"
+		break
+
+		case ("scorch"):
+			type = "npc_titan_ogre_meteor_boss_fd"
+		break
+
+		case ("northstar"):
+			type = "npc_titan_stryder_sniper_boss_fd"
+		break
+
+		case ("ronin"):
+			type = "npc_titan_stryder_leadwall_boss_fd"
+		break
+
+		case ("tone"):
+			type = "npc_titan_atlas_tracker_boss_fd"
+		break
+
+		case ("legion"):
+			type = "npc_titan_ogre_minigun_boss_fd"
+		break
+
+		case ("monarch"):
+			type = "npc_titan_atlas_vanguard_boss_fd"
+		break
+	}
+
+	vector angles = Vector(0, player.EyeAngles().y, 0)
+
+	entity titan = CreateNPCTitan("npc_titan", player.GetTeam(), location, angles)
+
+	SetSpawnOption_NPCTitan(titan, TITAN_HENCH)
+	SetSpawnOption_AISettings(titan, type)
+
+	DispatchSpawn(titan)
+
+	titan.SetMaxHealth(titanHealth)
+	titan.SetHealth(titanHealth)
+	titan.GetTitanSoul().SetShieldHealth(titan.GetTitanSoul().GetShieldHealthMax())
+	SoulTitanCore_SetNextAvailableTime(titan.GetTitanSoul(), 100.0)
 }
