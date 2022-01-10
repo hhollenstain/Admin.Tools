@@ -6,7 +6,7 @@ array<string> disabledModes = ["private_match", "inf", "hs", "ffa", "gg"]
 void function AutoShuffleTeamsHook()
 {
     // Shuffle teams at the end of the match
-	AddCallback_GameStateEnter(eGameState.Postmatch, AutoShuffleTeams)
+	AddCallback_GameStateEnter(eGameState.Prematch, AutoShuffleTeams)
 }
 
 void function AutoShuffleTeams()
